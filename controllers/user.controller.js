@@ -1,11 +1,3 @@
-const fs = require('fs');
-const path = require('path');
-
-// Reading data
-const tours = JSON.parse(
-  fs.readFileSync(path.join(__dirname, '..', 'dev-data', 'data', 'tours.json'))
-);
-
 // Route handlers
 exports.getAllUsers = (req, res) => {
   res
