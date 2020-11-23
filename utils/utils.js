@@ -11,3 +11,8 @@ exports.filteredQuery = (queryObject, itemsToBeExcluded) => {
 exports.parsedQueryString = (queryString) => {
   return queryString.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 };
+
+exports.getInputSeperatedString = (inputString, seperate) =>
+  inputString.split(',').join(seperate);
+
+exports.skipCount = (page, limit) => (page - 1) * limit;
