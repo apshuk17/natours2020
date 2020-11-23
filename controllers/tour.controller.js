@@ -1,9 +1,33 @@
 const Tour = require('../models/tour.models');
+const { filteredQuery, parsedQueryString } = require('../utils/utils');
 
 // Route handlers
 exports.getAllTours = async (req, res) => {
+  // Build Query
+  // 1a) Filtering
+  const queryObj = filteredQuery({ ...req.query }, [
+    'sort',
+    'page',
+    'limit',
+    'fields',
+  ]);
+
+  // 1b) Advanced Filtering
+  const queryString = parsedQueryString(JSON.stringify(queryObj));
+
+  let query = Tour.find(JSON.parse(queryString));
+
+  // 2) Sorting
+  if (req.query && req.query.sort) {
+    const sortBy = req.query.sort.split(',').join(' ');
+    query = query.sort(sortBy);
+  } else {
+    query = query.sort('-createdAt');
+  }
+
+  // Execute Query
   try {
-    const tours = await Tour.find();
+    const tours = await query;
     res
       .status(200)
       .json({ status: 'success', message: { results: tours.length, tours } });
