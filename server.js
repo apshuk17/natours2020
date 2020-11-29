@@ -5,7 +5,10 @@ const mongoose = require('mongoose');
 
 const app = require('./app');
 
-const port = process.env.NODE_ENV === 'development' ? process.env.PORT : 8000;
+const port =
+  process.env.NODE_ENV === 'development'
+    ? process.env.DEV_PORT
+    : process.env.PROD_PORT;
 
 // Create Database string
 const DB = process.env.DATABASE.replace(
