@@ -3,7 +3,7 @@ Following authentication steps to perform while doing route protection
 1. Check the token presence in the "Authorization" request header.
    a. If there is no token, return an unauthorized error with status code 401 and message "No logged
    in user".
-   b. If there is token, then split the "Bearer" and token value and then check 1. Token signature is valid.
+   b. If there is token, then split the "Bearer" and token value and then check the Token signature is valid.
     1. Use jwt.verify to verify the token signature, if it invalid then we'll get
     JsonWebTokenError which we'll handle in error controller.
     2. While performing verification, if token is expired we'll get an error of type

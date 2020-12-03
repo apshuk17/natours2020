@@ -8,6 +8,15 @@ exports.filteredQuery = (queryObject, itemsToBeExcluded) => {
   }, {});
 };
 
+exports.filteredObject = (input, ...filteredParams) => {
+  return Object.keys(input).reduce((acc, item) => {
+    if (filteredParams.includes(item)) {
+      acc[item] = input[item];
+    }
+    return acc;
+  }, {});
+};
+
 exports.parsedQueryString = (queryString) => {
   return queryString.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 };
