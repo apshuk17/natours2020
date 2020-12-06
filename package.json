@@ -6,8 +6,10 @@
   "scripts": {
     "start:dev": "nodemon server.js",
     "start:prod": "cross-env NODE_ENV=production nodemon server.js",
-    "import:data": "node dev-data/import-dev-data.js --import",
-    "delete:data": "node dev-data/import-dev-data.js --delete",
+    "import:Tour": "node dev-data/import-dev-data.js --import Tour",
+    "delete:Tour": "node dev-data/import-dev-data.js --delete Tour",
+    "import:Review": "node dev-data/import-dev-data.js --import Review",
+    "delete:Review": "node dev-data/import-dev-data.js --delete Review",
     "debug": "ndb server.js",
     "test": "jest"
   },
@@ -21,6 +23,7 @@
     "express-mongo-sanitize": "^2.0.1",
     "express-rate-limit": "^5.2.3",
     "helmet": "^4.2.0",
+    "hpp": "^0.2.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.15",
     "morgan": "^1.10.0",

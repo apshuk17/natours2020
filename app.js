@@ -5,10 +5,12 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
+const hpp = require('hpp');
 
 // express routes
 const tourRouter = require('./routes/tour.routes');
 const userRouter = require('./routes/user.routes');
+const reviewRouter = require('./routes/review.routes');
 const viewRouter = require('./routes/view.routes');
 
 // Error handling class
@@ -46,6 +48,20 @@ app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
 
+// Prevent params pollution
+app.use(
+  hpp({
+    whitelist: [
+      'duration',
+      'ratingsQuantity',
+      'ratingsAverage',
+      'maxGroupSize',
+      'difficulty',
+      'price',
+    ],
+  })
+);
+
 // Set View Engine
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -64,6 +80,7 @@ app.use('/', viewRouter);
 // API Routes
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
 // Unhandled route Error handling
 app.all('*', (req, res, next) => {

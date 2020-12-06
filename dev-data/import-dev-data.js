@@ -3,6 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const Tour = require('../models/tour.model');
+const Review = require('../models/review.model');
 // Set environment variables
 dotenv.config({ path: './config.env' });
 
@@ -22,18 +23,27 @@ const connectDB = async () => {
   });
 };
 
+const getFile = (Model) => {
+  switch (Model) {
+    case 'Tour':
+      return { file: 'tours.json', model: Tour };
+    case 'Review':
+      return { file: 'reviews.json', model: Review };
+    default:
+      return null;
+  }
+};
+
 // Import data in tours collection
-const importData = async () => {
+const importData = async (Model) => {
   try {
     // Reading data
-    const tours = JSON.parse(
-      fs.readFileSync(
-        path.join(__dirname, 'data', 'tours-simple.json'),
-        'utf-8'
-      )
+    const { file, model } = getFile(Model);
+    const data = JSON.parse(
+      fs.readFileSync(path.join(__dirname, 'data', file), 'utf-8')
     );
     await connectDB();
-    await Tour.create(tours);
+    await model.create(data);
     console.log('##Data imported successfully');
     process.exit(0);
   } catch (err) {
@@ -43,10 +53,11 @@ const importData = async () => {
 };
 
 // Delate data from tours collection
-const deleteData = async () => {
+const deleteData = async (Model) => {
   try {
+    const { model } = getFile(Model);
     await connectDB();
-    await Tour.deleteMany();
+    await model.deleteMany();
     console.log('##Data deleted successfully');
     process.exit(0);
   } catch (err) {
@@ -56,7 +67,7 @@ const deleteData = async () => {
 };
 
 if (process.argv[2] === '--import') {
-  importData();
+  importData(process.argv[3]);
 } else if (process.argv[2] === '--delete') {
-  deleteData();
+  deleteData(process.argv[3]);
 }
