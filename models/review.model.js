@@ -33,6 +33,22 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
+// Query Middleware
+reviewSchema.pre(/^find/, function (next) {
+  // this.populate({
+  //   path: 'tour',
+  //   select: 'name',
+  // }).populate({
+  //   path: 'user',
+  //   select: 'name',
+  // });
+  this.populate({
+    path: 'user',
+    select: 'name',
+  });
+  next();
+});
+
 const Review = mongoose.model('Review', reviewSchema);
 
 module.exports = Review;

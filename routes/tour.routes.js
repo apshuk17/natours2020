@@ -10,6 +10,7 @@ const {
   getMonthlyPlan,
 } = require('../controllers/tour.controller');
 const { protect, restrictTo } = require('../controllers/auth.controller');
+const reviewRouter = require('./review.routes');
 
 const router = express.Router();
 
@@ -24,6 +25,13 @@ router.route('/tour-stats').get(getTourStats);
 router.route('/monthly-plan/:year').get(getMonthlyPlan);
 
 router.route('/').get(protect, getAllTours).post(createTour);
+
+/*Nested routes
+POST /tour/12345/reviews
+GET /tour/12345/reviews
+GET /tour/12345/reviews/57575
+*/
+router.use('/:tourId/reviews', reviewRouter);
 
 router
   .route('/:id')

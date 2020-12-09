@@ -78,11 +78,6 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Incorrect email or password', 401));
   }
 
-  // Only allow active user
-  if (!user.active) {
-    return next(new AppError('User not found', 401));
-  }
-
   // 3) If everything is OK, create and send token to the client
   await createAndSendToken(user, 200, res);
 });
